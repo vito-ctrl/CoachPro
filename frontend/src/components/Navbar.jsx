@@ -12,6 +12,9 @@ export default function Navbar() {
         <Link to="/" className="text-gray-600 hover:text-blue-600">
           Login
         </Link>
+        <Link to="/register" className="text-gray-600 hover:text-blue-600">
+          register
+        </Link>
       </div>
     </nav>
   );

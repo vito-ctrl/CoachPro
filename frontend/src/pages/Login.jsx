@@ -5,11 +5,10 @@ import Navbar from "../components/Navbar";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("Athlete");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Fake validation
@@ -20,10 +19,19 @@ export default function Login() {
 
     setError("");
 
+    const res = await fetch('http://localhost/backend/Api/login.php', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({email, password})
+    })
+    console.log(res);
+    const data = await res.json()
+    console.log(data);
+
     // Fake login logic (redirect based on role)
-    if (role === "Athlete") {
+    if (data.user.role === "athlete") {
       navigate("/athlete");
-    } else if (role === "Coach") {
+    } else if (data.user.role === "coach") {
       navigate("/coach");
     }
   };
@@ -57,15 +65,6 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <select
-              className="w-full p-3 border rounded"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option>Athlete</option>
-              <option>Coach</option>
-            </select>
-
             <button
               type="submit"
               className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700"
@@ -75,7 +74,7 @@ export default function Login() {
           </form>
 
           <p className="mt-4 text-center text-gray-500">
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <span
               onClick={() => navigate("/register")}
               className="text-blue-600 cursor-pointer hover:underline"

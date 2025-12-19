@@ -11,25 +11,46 @@ export default function Register() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const fetchData = async (e) => {
     e.preventDefault();
 
-    // Simple validation
     if (!name || !email || !password || !confirmPassword) {
       setError("Please fill all fields");
       return;
     }
 
     if (password !== confirmPassword) {
+      alert("comfime password is not correct !");
       setError("Passwords do not match");
       return;
     }
 
     setError("");
 
-    // Fake registration logic: redirect to login
-    navigate("/");
-  };
+    const res = await fetch('http://localhost/backend/Api/user.php', {
+      method: "POST",
+      headers: { "Content-Type": "application/json"},
+      body: JSON.stringify({ name, email, password, role})
+    })
+
+    console.log(res);
+    const data = await res.json();
+
+    if (data.success) {
+      console.log("Logged in: ", data.user);
+      navigate("/");
+    } else {
+      console.error(data.error);
+    }
+  }
+
+  // const handleError = (e) => {
+  //   e.preventDefault();
+
+    
+
+  //   navigate("/");
+  // };
 
   return (
     <>
@@ -43,7 +64,7 @@ export default function Register() {
             <p className="text-red-500 text-center mb-4">{error}</p>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={fetchData} className="space-y-4">
             <input
               type="text"
               placeholder="Full Name"
@@ -81,8 +102,8 @@ export default function Register() {
               value={role}
               onChange={(e) => setRole(e.target.value)}
             >
-              <option>Athlete</option>
-              <option>Coach</option>
+              <option>atlethe</option>
+              <option>coach</option>
             </select>
 
             <button

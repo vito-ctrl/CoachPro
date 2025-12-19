@@ -7,6 +7,7 @@ import CoachesList from "./pages/CoachesList";
 import MyReservations from "./pages/MyReservations";
 import Reservations from "./pages/Reservations.jsx";
 import CoachProfile from "./pages/CoachProfile";
+import CompleteCoachProfile from "./pages/CompleteCoachProfile.jsx";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/Myreservation" element={<MyReservations />} />
       <Route path="/reservation" element={<Reservations />} />
       <Route path="/coach/:id" element={<CoachProfile />} />
+      <Route path="/compCoach/:id" element={<CompleteCoachProfile />} />
     </Routes>
   );
 }
